@@ -461,7 +461,19 @@ function App() {
       <header className="app-header hide-in-focus">
         {/* Left: Logo & Title */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <img src="./logo.png" alt="Pomohodoro Logo" style={{ height: '50px', objectFit: 'contain' }} />
+          <div style={{
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            overflow: 'hidden',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            border: '2px solid var(--accent-color)',
+            flexShrink: 0
+          }}>
+            <img src="./logo.png" alt="Pomohodoro Logo" style={{ width: '110%', height: '110%', objectFit: 'cover' }} />
+          </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <h1 style={{ fontSize: '2.5rem', fontFamily: '"Outfit", sans-serif', fontWeight: 700, margin: 0, letterSpacing: '-0.5px', color: 'var(--text-primary)', lineHeight: 1 }}>
               Pomo<span style={{ color: 'var(--accent-color)' }}>hodor</span>o
