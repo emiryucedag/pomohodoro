@@ -114,6 +114,15 @@ function App() {
     synth.setVolume(noiseVolume);
   }, [noiseVolume]);
 
+  // Dynamic Page Title
+  useEffect(() => {
+    if (isActive) {
+      document.title = `${formatDisplayTime(timeLeft)} - Pomohodoro`;
+    } else {
+      document.title = "Pomohodoro | Hold the Focus";
+    }
+  }, [isActive, timeLeft]);
+
   // Handle sequence index changes (loading the block naturally)
   useEffect(() => {
     // If we are actively running, don't auto-override unless deliberate.
