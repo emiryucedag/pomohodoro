@@ -445,15 +445,7 @@ function App() {
       />
 
       {/* Global Header */}
-      <header className="app-header hide-in-focus" style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-        maxWidth: '1200px',
-        margin: '20px auto 40px auto',
-        padding: '0 20px'
-      }}>
+      <header className="app-header hide-in-focus">
         {/* Left: Logo & Title */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           <img src="./logo.png" alt="Pomohodoro Logo" style={{ height: '50px', objectFit: 'contain' }} />
@@ -493,7 +485,7 @@ function App() {
         </div>
       </header>
 
-      <div className="app-container" style={{ display: 'flex', flexDirection: 'row', gap: '30px', alignItems: 'flex-start', justifyContent: 'center', maxWidth: '1000px', margin: '0 auto', padding: '0 20px' }}>
+      <div className="app-container">
 
         {/* Panel 1: Main Timer */}
         <div className="minimal-panel timer-box" style={{ flex: 1 }}>

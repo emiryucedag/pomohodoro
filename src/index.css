@@ -63,7 +63,7 @@ body {
 }
 
 body.focus-mode {
-  /* Internal state managed via inline styles */
+  transition: background-color 0.8s ease;
 }
 
 #root {
@@ -76,6 +76,16 @@ body.focus-mode {
   /* Align to top naturally */
   align-items: center;
   padding: 0 20px 40px 20px;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto 40px auto;
+  padding: 0 20px;
 }
 
 .app-container {
@@ -97,6 +107,14 @@ body.focus-mode {
     flex-direction: column !important;
     gap: 20px;
     text-align: center;
+  }
+
+  .minimal-panel {
+    padding: 24px !important;
+  }
+
+  .timer-display {
+    font-size: 5rem !important;
   }
 }
 
