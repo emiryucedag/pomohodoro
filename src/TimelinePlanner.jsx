@@ -80,8 +80,8 @@ const TimelinePlanner = ({ isOpen, onClose, originalSequence, onSaveSequence }) 
                 {/* HEADER */}
                 <div style={{ padding: '30px 40px', background: 'var(--bg-primary)', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
-                        <h2 className="panel-header" style={{ margin: 0, marginBottom: '8px' }}>Çalışmanı Planla</h2>
-                        <div style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>Time-box your day. Set a total duration, and carve out blocks.</div>
+                        <h2 className="panel-header" style={{ margin: 0, marginBottom: '8px' }}>Plan Your Focus</h2>
+                        <div style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>Organize your day with sequential workspace blocks. Set a total duration and start building.</div>
                     </div>
                     <button onClick={onClose} style={{ padding: '8px', background: 'transparent', border: 'none' }}><X size={24} /></button>
                 </div>

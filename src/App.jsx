@@ -468,7 +468,7 @@ function App() {
           <button
             onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
             style={{ padding: '12px', borderRadius: 'var(--radius-sm)', background: 'var(--bg-secondary)' }}
-            title="Temayı Değiştir"
+            title="Change Theme"
           >
             {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
           </button>
@@ -483,7 +483,7 @@ function App() {
             <button
               onClick={resetTotalTime}
               style={{ background: 'transparent', border: 'none', color: 'var(--danger-color)', padding: '5px', borderRadius: '50%' }}
-              title="Sıfırla"
+              title="Reset"
             >
               <Trash2 size={18} />
             </button>
@@ -515,11 +515,11 @@ function App() {
             {!isActive ? (
               <div style={{ display: 'flex', gap: '15px', width: '100%' }}>
                 <button className="primary" onClick={startTimer} style={{ flex: 1, padding: '16px', fontSize: '1.2rem', fontWeight: 600 }}>
-                  <Play size={22} /> {accumulatedElapsedBeforePauseRef.current > 0 ? 'Devam Et' : 'Start'}
+                  <Play size={22} /> {accumulatedElapsedBeforePauseRef.current > 0 ? 'Continue' : 'Start'}
                 </button>
                 {accumulatedElapsedBeforePauseRef.current > 0 && (
                   <button className="secondary" onClick={finishEarly} style={{ flex: 1, padding: '16px', fontSize: '1rem', fontWeight: 600 }}>
-                    <CheckCircle2 size={20} /> Tamamla
+                    <CheckCircle2 size={20} /> Complete
                   </button>
                 )}
               </div>
@@ -568,7 +568,7 @@ function App() {
             </p>
 
             <button onClick={() => setShowPlanner(true)} className="primary" style={{ width: '100%', marginBottom: '30px' }}>
-              <ListOrdered size={20} /> Çalışmanı Planla {sequence.length > 0 ? `(${sequence.length} blocks)` : ''}
+              <ListOrdered size={20} /> Plan Your Tasks {sequence.length > 0 ? `(${sequence.length} blocks)` : ''}
             </button>
 
             {/* Dynamic Sequence Preview inside the panel */}
@@ -605,89 +605,91 @@ function App() {
       </div>
 
       {/* Sweeping Live Timeline at Bottom if sequence exists */}
-      {!focusMode && sequence.length > 0 && seqIndex >= 0 && (
-        <div style={{
-          width: '100%', maxWidth: '1200px', margin: '40px auto 0 auto',
-          padding: '24px', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-lg)',
-          border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-subtle)'
-        }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', fontSize: '0.9rem', fontWeight: 600 }}>
-            <span>Session Live Progress</span>
-            <span style={{ color: 'var(--text-secondary)' }}>
-              {formatDisplayTime(elapsedSeqSeconds)} / {formatDisplayTime(totalSeqSeconds)}
-            </span>
-          </div>
-          <div className="timeline-bar-container" style={{ position: 'relative' }}>
-            {sequence.map((block, i) => {
-              const percWidth = ((block.durationMinutes * 60) / totalSeqSeconds) * 100;
-              return (
-                <div
-                  key={block.id}
-                  style={{
-                    width: `${percWidth}%`,
-                    height: '100%',
-                    background: block.type === 'work' ? 'var(--accent-color)' : 'var(--accent-break)',
-                    borderRight: i === sequence.length - 1 ? 'none' : '2px solid var(--bg-primary)',
-                    opacity: 0.2 // Base faded blocks
-                  }}
-                  title={`${block.title} - ${block.durationMinutes}m`}
-                />
-              );
-            })}
-
-            {/* Sweeping Active Overlay Bar */}
-            <div style={{
-              position: 'absolute',
-              top: 0, left: 0, height: '100%',
-              width: `${(elapsedSeqSeconds / totalSeqSeconds) * 100}%`,
-              background: 'rgba(255,255,255,0.4)',
-              borderRight: '3px solid white',
-              mixBlendMode: 'overlay',
-              transition: 'width 0.5s linear',
-              boxShadow: '0 0 10px rgba(255,255,255,0.5)'
-            }}>
+      {
+        !focusMode && sequence.length > 0 && seqIndex >= 0 && (
+          <div style={{
+            width: '100%', maxWidth: '1200px', margin: '40px auto 0 auto',
+            padding: '24px', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-lg)',
+            border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-subtle)'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', fontSize: '0.9rem', fontWeight: 600 }}>
+              <span>Session Live Progress</span>
+              <span style={{ color: 'var(--text-secondary)' }}>
+                {formatDisplayTime(elapsedSeqSeconds)} / {formatDisplayTime(totalSeqSeconds)}
+              </span>
             </div>
+            <div className="timeline-bar-container" style={{ position: 'relative' }}>
+              {sequence.map((block, i) => {
+                const percWidth = ((block.durationMinutes * 60) / totalSeqSeconds) * 100;
+                return (
+                  <div
+                    key={block.id}
+                    style={{
+                      width: `${percWidth}%`,
+                      height: '100%',
+                      background: block.type === 'work' ? 'var(--accent-color)' : 'var(--accent-break)',
+                      borderRight: i === sequence.length - 1 ? 'none' : '2px solid var(--bg-primary)',
+                      opacity: 0.2 // Base faded blocks
+                    }}
+                    title={`${block.title} - ${block.durationMinutes}m`}
+                  />
+                );
+              })}
 
-            {/* Solid Completed + Active Overlay directly rendering over faded */}
-            {sequence.map((block, i) => {
-              const percWidth = ((block.durationMinutes * 60) / totalSeqSeconds) * 100;
+              {/* Sweeping Active Overlay Bar */}
+              <div style={{
+                position: 'absolute',
+                top: 0, left: 0, height: '100%',
+                width: `${(elapsedSeqSeconds / totalSeqSeconds) * 100}%`,
+                background: 'rgba(255,255,255,0.4)',
+                borderRight: '3px solid white',
+                mixBlendMode: 'overlay',
+                transition: 'width 0.5s linear',
+                boxShadow: '0 0 10px rgba(255,255,255,0.5)'
+              }}>
+              </div>
 
-              // calculate left starting percentage
-              let leftOffsetPerc = 0;
-              for (let j = 0; j < i; j++) leftOffsetPerc += ((sequence[j].durationMinutes * 60) / totalSeqSeconds) * 100;
+              {/* Solid Completed + Active Overlay directly rendering over faded */}
+              {sequence.map((block, i) => {
+                const percWidth = ((block.durationMinutes * 60) / totalSeqSeconds) * 100;
 
-              let fillWidth = 0;
-              if (seqIndex > i) {
-                fillWidth = percWidth; // fully solid
-              } else if (seqIndex === i) {
-                let currentBlockElapsed = accumulatedElapsedBeforePauseRef.current;
-                if (isActive) currentBlockElapsed += Math.floor((Date.now() - blockStartTimeRef.current) / 1000);
-                fillWidth = (currentBlockElapsed / totalSeqSeconds) * 100;
-              }
+                // calculate left starting percentage
+                let leftOffsetPerc = 0;
+                for (let j = 0; j < i; j++) leftOffsetPerc += ((sequence[j].durationMinutes * 60) / totalSeqSeconds) * 100;
 
-              if (fillWidth === 0) return null;
+                let fillWidth = 0;
+                if (seqIndex > i) {
+                  fillWidth = percWidth; // fully solid
+                } else if (seqIndex === i) {
+                  let currentBlockElapsed = accumulatedElapsedBeforePauseRef.current;
+                  if (isActive) currentBlockElapsed += Math.floor((Date.now() - blockStartTimeRef.current) / 1000);
+                  fillWidth = (currentBlockElapsed / totalSeqSeconds) * 100;
+                }
 
-              return (
-                <div
-                  key={`fill-${block.id}`}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: `${leftOffsetPerc}%`,
-                    width: `${fillWidth}%`,
-                    height: '100%',
-                    background: block.type === 'work' ? 'var(--accent-color)' : 'var(--accent-break)',
-                    borderRight: i === sequence.length - 1 ? 'none' : '2px solid var(--bg-primary)',
-                    borderTopRightRadius: seqIndex === i ? '8px' : '0',
-                    borderBottomRightRadius: seqIndex === i ? '8px' : '0',
-                    transition: 'width 0.5s linear'
-                  }}
-                />
-              );
-            })}
+                if (fillWidth === 0) return null;
+
+                return (
+                  <div
+                    key={`fill-${block.id}`}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: `${leftOffsetPerc}%`,
+                      width: `${fillWidth}%`,
+                      height: '100%',
+                      background: block.type === 'work' ? 'var(--accent-color)' : 'var(--accent-break)',
+                      borderRight: i === sequence.length - 1 ? 'none' : '2px solid var(--bg-primary)',
+                      borderTopRightRadius: seqIndex === i ? '8px' : '0',
+                      borderBottomRightRadius: seqIndex === i ? '8px' : '0',
+                      transition: 'width 0.5s linear'
+                    }}
+                  />
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        )
+      }
 
       {/* Focus Audio Bottom Bar */}
       <div className={`audio-controls ${focusMode ? 'hide-in-focus' : ''}`} style={{
@@ -723,49 +725,53 @@ function App() {
         )}
       </div>
       {/* FINISH POPUP */}
-      {finishPopup && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
-          backgroundColor: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)',
-          display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999
-        }}>
-          <div className="minimal-panel" style={{ textAlign: 'center', padding: '50px', maxWidth: '450px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
-            <h2 style={{ fontSize: '2.5rem', marginBottom: '20px', color: finishPopup.type === 'work' || finishPopup.type === 'complete' ? 'var(--success-color)' : 'var(--accent-color)' }}>
-              {finishPopup.title}
-            </h2>
-            <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '40px', lineHeight: '1.6' }}>
-              {finishPopup.message}
-            </p>
-            <button className="primary" onClick={() => setFinishPopup(null)} style={{ width: '100%', padding: '16px', fontSize: '1.2rem', borderRadius: 'var(--radius-md)' }}>
-              Got it
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* CONFIRM DIALOG POPUP */}
-      {confirmDialog && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
-          backgroundColor: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)',
-          display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999
-        }}>
-          <div className="minimal-panel" style={{ textAlign: 'center', padding: '40px', maxWidth: '400px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
-            <h2 style={{ fontSize: '1.8rem', marginBottom: '16px', color: 'var(--text-primary)' }}>Are you sure?</h2>
-            <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '30px', lineHeight: '1.5' }}>
-              {confirmDialog.message}
-            </p>
-            <div style={{ display: 'flex', gap: '15px' }}>
-              <button className="secondary" onClick={() => setConfirmDialog(null)} style={{ flex: 1, padding: '14px', fontSize: '1.1rem' }}>
-                Cancel
-              </button>
-              <button className="danger" onClick={confirmDialog.onConfirm} style={{ flex: 1, padding: '14px', fontSize: '1.1rem' }}>
-                Confirm
+      {
+        finishPopup && (
+          <div style={{
+            position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+            backgroundColor: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)',
+            display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999
+          }}>
+            <div className="minimal-panel" style={{ textAlign: 'center', padding: '50px', maxWidth: '450px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
+              <h2 style={{ fontSize: '2.5rem', marginBottom: '20px', color: finishPopup.type === 'work' || finishPopup.type === 'complete' ? 'var(--success-color)' : 'var(--accent-color)' }}>
+                {finishPopup.title}
+              </h2>
+              <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '40px', lineHeight: '1.6' }}>
+                {finishPopup.message}
+              </p>
+              <button className="primary" onClick={() => setFinishPopup(null)} style={{ width: '100%', padding: '16px', fontSize: '1.2rem', borderRadius: 'var(--radius-md)' }}>
+                Got it
               </button>
             </div>
           </div>
-        </div>
-      )}
+        )
+      }
+
+      {/* CONFIRM DIALOG POPUP */}
+      {
+        confirmDialog && (
+          <div style={{
+            position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+            backgroundColor: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)',
+            display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999
+          }}>
+            <div className="minimal-panel" style={{ textAlign: 'center', padding: '40px', maxWidth: '400px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
+              <h2 style={{ fontSize: '1.8rem', marginBottom: '16px', color: 'var(--text-primary)' }}>Are you sure?</h2>
+              <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '30px', lineHeight: '1.5' }}>
+                {confirmDialog.message}
+              </p>
+              <div style={{ display: 'flex', gap: '15px' }}>
+                <button className="secondary" onClick={() => setConfirmDialog(null)} style={{ flex: 1, padding: '14px', fontSize: '1.1rem' }}>
+                  Cancel
+                </button>
+                <button className="danger" onClick={confirmDialog.onConfirm} style={{ flex: 1, padding: '14px', fontSize: '1.1rem' }}>
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        )
+      }
     </>
   );
 }
