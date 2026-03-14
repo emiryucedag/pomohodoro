@@ -1,4 +1,4 @@
-# 🍅 Pomohodoro
+# 🍅 Pomohodoro - Hold the Focus
 
 **Pomohodoro** is more than just a timer; it is a modern productivity assistant with a premium design and advanced planning features that turn focus sessions into an art form.
 
