@@ -1,47 +1,47 @@
 # 🍅 Pomohodoro
 
-**Pomohodoro**, sadece bir zamanlayıcı değil; odaklanma seanslarını sanata dönüştüren, premium tasarıma ve gelişmiş planlama özelliklerine sahip modern bir üretkenlik asistanıdır.
+**Pomohodoro** is more than just a timer; it is a modern productivity assistant with a premium design and advanced planning features that turn focus sessions into an art form.
 
 ![Pomohodoro Logo](public/logo.png)
 
-## ✨ Özellikler
+## ✨ Features
 
--   **🎨 Premium Tasarım:** Midnight Slate ve Soft Cream temaları arasında pürüzsüz geçişler sağlayan modern, minimal ve şık kullanıcı arayüzü.
--   **📅 Dinamik Seans Planlayıcı:** Gününü bloklar halinde planla! Çalışma ve mola sürelerini ardışık olarak diz, zamanlayıcı seni otomatik olarak yönlendirsin.
--   **🧹 Canlı Progress Timeline:** Planladığın tüm seansların ilerleyişini sayfanın altındaki sweeping timeline üzerinden canlı olarak izle.
--   **🔊 Odaklanma Sesi (Focus Noise):** Dikkati artırmak için özel olarak sentezlenmiş "Brown Noise" odaklanma sesi ve hassas ses kontrolü.
--   **💾 Kalıcı İstatistikler:** Toplam odaklanma süren tarayıcına güvenli bir şekilde kaydedilir, sayfayı kapatsan bile emeğin asla kaybolmaz.
--   **🚀 Odaklanma Modu (Focus Mode):** Tüm dikkat dağıtıcı unsurları gizleyen ve seni sadece zamanla baş başa bırakan tam ekran odaklanma deneyimi.
--   **🔔 Akıllı Bildirimler:** Bir seans bittiğinde uygulama içi özel pop-up'lar ile bilgilendiril.
+-   **🎨 Premium Design:** A modern, minimal, and elegant UI with fluid transitions between Midnight Slate and Soft Cream themes.
+-   **📅 Dynamic Session Planner:** Plan your day in blocks! Arrange work and break periods sequentially, and let the timer guide you automatically.
+-   **🧹 Live Progress Timeline:** Monitor the real-time progress of all planned sessions through a sweeping live timeline.
+-   **🔊 Focus Noise (Brown Noise):** Specially synthesized "Brown Noise" to enhance concentration, featuring high-precision volume control.
+-   **💾 Persistent Statistics:** Your total focus time is securely saved in your browser, ensuring your hard work is never lost even if you close the tab.
+-   **🚀 Focus Mode:** A full-screen experience that hides distractions and keeps you one-on-one with your task.
+-   **🔔 Smart In-App Notifications:** Stay informed with custom, elegant pop-ups when a session or plan is completed.
 
-## 🛠️ Teknoloji Yığını
+## 🛠️ Tech Stack
 
--   **React 18** - Frontend kütüphanesi
--   **Vite** - Hızlı derleme ve geliştirme ortamı
--   **Lucide React** - Minimalist ikon kütüphanesi
--   **Web Audio API** - Gürültüsüz, yüksek kaliteli ses sentezleme
--   **Local Storage API** - Veri kalıcılığı
+-   **React 18** - Frontend library
+-   **Vite** - High-performance build tool
+-   **Lucide React** - Minimalist icon set
+-   **Web Audio API** - High-fidelity, noise-free sound synthesis
+-   **Local Storage API** - Reliable data persistence
 
-## 🚀 Kurulum
+## 🚀 Getting Started
 
-Projeyi yerel bilgisayarında çalıştırmak için şu adımları izle:
+Follow these steps to run the project locally:
 
-1. Depoyu klonla:
+1. Clone the repository:
    ```bash
    git clone https://github.com/emiryucedag/pomohodoro.git
    ```
-2. Proje dizinine git:
+2. Navigate to the project directory:
    ```bash
    cd pomohodoro
    ```
-3. Bağımlılıkları yükle:
+3. Install dependencies:
    ```bash
    npm install
    ```
-4. Geliştirme sunucusunu başlat:
+4. Start the development server:
    ```bash
    npm run dev
    ```
 
 ---
-*Emir Yücedağ tarafından geliştirildi.*
+*Developed by Emir Yücedag.*
