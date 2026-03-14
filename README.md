@@ -4,6 +4,10 @@
 
 ![Pomohodoro Logo](public/logo.png)
 
+## 🔗 Live Application
+You can access and use the application directly here:  
+**[https://emiryucedag.github.io/pomohodoro/](https://emiryucedag.github.io/pomohodoro/)**
+
 ## ✨ Features
 
 -   **🎨 Premium Design:** A modern, minimal, and elegant UI with fluid transitions between Midnight Slate and Soft Cream themes.
@@ -21,27 +25,6 @@
 -   **Lucide React** - Minimalist icon set
 -   **Web Audio API** - High-fidelity, noise-free sound synthesis
 -   **Local Storage API** - Reliable data persistence
-
-## 🚀 Getting Started
-
-Follow these steps to run the project locally:
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/emiryucedag/pomohodoro.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd pomohodoro
-   ```
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
 
 ---
 *Developed by Emir Yücedag.*
