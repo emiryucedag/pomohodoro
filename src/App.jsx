@@ -458,7 +458,9 @@ function App() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           <img src="./logo.png" alt="Pomohodoro Logo" style={{ height: '50px', objectFit: 'contain' }} />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <h1 style={{ fontSize: '2.5rem', fontFamily: '"Outfit", sans-serif', fontWeight: 700, margin: 0, letterSpacing: '-0.5px', color: 'var(--text-primary)', lineHeight: 1 }}>Pomohodoro</h1>
+            <h1 style={{ fontSize: '2.5rem', fontFamily: '"Outfit", sans-serif', fontWeight: 700, margin: 0, letterSpacing: '-0.5px', color: 'var(--text-primary)', lineHeight: 1 }}>
+              Pomo<span style={{ color: 'var(--accent-color)' }}>hodoro</span>
+            </h1>
             <span style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--accent-color)', letterSpacing: '2px', textTransform: 'uppercase', marginTop: '4px' }}>Hold the Focus</span>
           </div>
         </div>
