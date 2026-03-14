@@ -1,58 +1,48 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* Premium Midnight Slate Dark Mode (Default) */
-  --bg-primary: #0F172A;
-  /* Deep Slate Blue */
-  --bg-secondary: #1E293B;
-  /* Slightly Lighter Slate */
-  --text-primary: #F8FAFC;
-  /* Crisp White/Slate */
-  --text-secondary: #94A3B8;
-  /* Muted Slate */
+  /* Carbon Dark Mode (UI Reference 1) */
+  --bg-primary: #1A1C1E;
+  --bg-secondary: #24272B;
+  --text-primary: #FFFFFF;
+  --text-secondary: #8E9297;
 
-  /* Vibrant Accents */
-  --accent-color: #10B981;
-  /* Premium Emerald */
-  --accent-hover: #059669;
-  --accent-break: #F59E0B;
-  /* Warm Amber */
+  /* Vibrant Dashboard Accents */
+  --accent-color: #FF5C58;
+  /* Flashy Orange-Red */
+  --accent-hover: #E84D49;
+  --accent-break: #FFD124;
+  /* Sun Yellow */
 
-  --danger-color: #EF4444;
-  /* Crisp Red */
+  --danger-color: #FF5C58;
   --success-color: #10B981;
-  --border-color: #334155;
-  /* Slate Border */
+  --border-color: #2D3238;
 
   --radius-sm: 12px;
-  --radius-md: 18px;
+  --radius-md: 20px;
   --radius-lg: 32px;
 
-  --shadow-subtle: 0 10px 40px -10px rgba(0, 0, 0, 0.4);
+  --shadow-subtle: 0 20px 60px rgba(0, 0, 0, 0.45);
 }
 
 body.light-mode {
-  /* Premium Soft Cream Light Mode */
-  --bg-primary: #F8FAFC;
-  /* Very light cool grey/cream */
+  /* Arctic Light Mode (UI Reference 2) */
+  --bg-primary: #F4F7FE;
   --bg-secondary: #FFFFFF;
-  /* Pure White Panels */
-  --text-primary: #0F172A;
-  /* Dark Slate Text */
-  --text-secondary: #64748B;
-  /* Medium Slate Text */
+  --text-primary: #1B2559;
+  --text-secondary: #A3AED0;
 
-  --accent-color: #3B82F6;
-  /* Bright Royal Blue */
-  --accent-hover: #2563EB;
-  --accent-break: #F59E0B;
+  --accent-color: #4318FF;
+  /* Royal Blue */
+  --accent-hover: #3311CC;
+  --accent-break: #FFB547;
+  /* Soft Orange */
 
-  --danger-color: #EF4444;
-  --success-color: #3B82F6;
-  --border-color: #E2E8F0;
-  /* Light Slate Border */
+  --danger-color: #FF5C58;
+  --success-color: #10B981;
+  --border-color: #E9EDF7;
 
-  --shadow-subtle: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+  --shadow-subtle: 0 18px 40px rgba(112, 144, 176, 0.15);
 }
 
 * {
@@ -73,7 +63,7 @@ body {
 }
 
 body.focus-mode {
-  /* background managed by inline style */
+  /* Internal state managed via inline styles */
 }
 
 #root {
@@ -231,6 +221,7 @@ button.danger:hover {
 
 input[type="range"] {
   -webkit-appearance: none;
+  appearance: none;
   width: 100px;
   background: transparent;
 }
