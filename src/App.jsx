@@ -14,12 +14,13 @@ function App() {
   const [sequence, setSequence] = useState(() => {
     return JSON.parse(localStorage.getItem('pomohodoro_sequence')) || [];
   });
-  // seqIndex: -1 means Standalone config. >= 0 means array index of sequence.
   const [seqIndex, setSeqIndex] = useState(() => {
-    return parseInt(localStorage.getItem('pomohodoro_seq_index')) || -1;
+    const saved = parseInt(localStorage.getItem('pomohodoro_seq_index'));
+    return isNaN(saved) ? -1 : saved;
   });
   const [globalTargetSeconds, setGlobalTargetSeconds] = useState(() => {
-    return parseInt(localStorage.getItem('pomohodoro_global_limit')) || 0;
+    const saved = parseInt(localStorage.getItem('pomohodoro_global_limit'));
+    return isNaN(saved) ? 0 : saved;
   });
 
   // === BULLETPROOF TIMER STATE ===
@@ -58,7 +59,8 @@ function App() {
 
   // === PERSISTENT TOTAL ===
   const [totalFocusTime, setTotalFocusTime] = useState(() => {
-    return parseInt(localStorage.getItem('pomohodoro_total_time')) || 0;
+    const saved = parseInt(localStorage.getItem('pomohodoro_total_time'));
+    return isNaN(saved) ? 0 : saved;
   });
 
   const intervalRef = useRef(null);
@@ -86,8 +88,10 @@ function App() {
   }, [focusMode, focusBgColor]);
 
   useEffect(() => {
-    if (Notification.permission === 'default' || Notification.permission === 'prompt') {
-      Notification.requestPermission();
+    if (typeof window !== 'undefined' && 'Notification' in window) {
+      if (Notification.permission === 'default' || Notification.permission === 'prompt') {
+        Notification.requestPermission();
+      }
     }
   }, []);
 
