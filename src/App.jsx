@@ -155,10 +155,10 @@ function App() {
           setTimeLeft(0);
 
           setFinishPopup({
-            title: sessionTypeRef.current === 'work' ? "Odaklanma Tamamlandı!" : "Mola Bitti!",
+            title: sessionTypeRef.current === 'work' ? "Focus Completed!" : "Break Over!",
             message: sessionTypeRef.current === 'work'
-              ? "Tebrikler! Süreyi başarıyla tamamladın."
-              : "Mola süren doldu, sıradaki göreve hazırlan.",
+              ? "Congratulations! You successfully finished the session."
+              : "Your break is over. Get ready for the next task.",
             type: sessionTypeRef.current
           });
 
@@ -198,7 +198,7 @@ function App() {
 
   const resetTotalTime = () => {
     setConfirmDialog({
-      message: "Tüm odaklanma geçmişini sıfırlamak istediğine emin misin? Bu işlem geri alınamaz.",
+      message: "Are you sure you want to reset all focus history? This action cannot be undone.",
       onConfirm: () => {
         setTotalFocusTime(0);
         setConfirmDialog(null);
@@ -225,8 +225,8 @@ function App() {
       } else {
         setSeqIndex(-1);
         setFinishPopup({
-          title: "Plan Tamamlandı!",
-          message: "Harika iş çıkardın, tüm planı başarıyla bitirdin.",
+          title: "Plan Completed!",
+          message: "Great job! You have successfully completed the entire plan.",
           type: "complete"
         });
       }
@@ -253,7 +253,7 @@ function App() {
     // In many cases, we want to confirm if finishing very early
     if (totalElapsed < 5 && totalElapsed > 0) {
       setConfirmDialog({
-        message: "Bu oturumu henüz yeni başlattın. Yine de tamamlanmış sayıp kapatmak istiyor musun?",
+        message: "You've just started this session. Are you sure you want to finish it early?",
         onConfirm: () => {
           finalizeAndAdvance(totalElapsed);
           setConfirmDialog(null);
@@ -270,7 +270,7 @@ function App() {
     if (isActive) return;
     if (accumulatedElapsedBeforePauseRef.current > 0) {
       setConfirmDialog({
-        message: "Mevcut oturumun duraklatılmış durumda. Geçiş yaparsan süre sıfırlanacak. Devam edilsin mi?",
+        message: "Your current session is paused. Switching will reset your progress. Do you want to continue?",
         onConfirm: () => {
           accumulatedElapsedBeforePauseRef.current = 0;
           setSeqIndex(-1);
@@ -289,7 +289,7 @@ function App() {
     const num = Math.max(0, parseInt(val) || 0);
     if (isActive || accumulatedElapsedBeforePauseRef.current > 0) {
       setConfirmDialog({
-        message: "Çalışma devam ederken süreyi değiştirmek mevcut ilerlemeyi resetleyecektir. Emin misin?",
+        message: "Changing the duration while active will reset your current progress. Are you sure?",
         onConfirm: () => {
           applyConfigChange(type, field, num);
           setConfirmDialog(null);
@@ -737,7 +737,7 @@ function App() {
               {finishPopup.message}
             </p>
             <button className="primary" onClick={() => setFinishPopup(null)} style={{ width: '100%', padding: '16px', fontSize: '1.2rem', borderRadius: 'var(--radius-md)' }}>
-              Tamam
+              Got it
             </button>
           </div>
         </div>
@@ -751,16 +751,16 @@ function App() {
           display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999
         }}>
           <div className="minimal-panel" style={{ textAlign: 'center', padding: '40px', maxWidth: '400px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
-            <h2 style={{ fontSize: '1.8rem', marginBottom: '16px', color: 'var(--text-primary)' }}>Emin misin?</h2>
+            <h2 style={{ fontSize: '1.8rem', marginBottom: '16px', color: 'var(--text-primary)' }}>Are you sure?</h2>
             <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '30px', lineHeight: '1.5' }}>
               {confirmDialog.message}
             </p>
             <div style={{ display: 'flex', gap: '15px' }}>
               <button className="secondary" onClick={() => setConfirmDialog(null)} style={{ flex: 1, padding: '14px', fontSize: '1.1rem' }}>
-                İptal
+                Cancel
               </button>
               <button className="danger" onClick={confirmDialog.onConfirm} style={{ flex: 1, padding: '14px', fontSize: '1.1rem' }}>
-                Tamam
+                Confirm
               </button>
             </div>
           </div>
