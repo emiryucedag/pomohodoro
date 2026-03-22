@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, Maximize, Minimize, Headphones, CheckCircle2, ListOrdered, FastForward, Trash2, Moon, Sun } from 'lucide-react';
-import { synth } from './audio';
+import { synth, notifications } from './audio';
 import TimelinePlanner from './TimelinePlanner';
 import './index.css';
 
@@ -64,6 +64,7 @@ function App() {
   });
 
   const intervalRef = useRef(null);
+  const lastBeepRef = useRef(-1); // To avoid multi-beeping in the same second
 
   // === EFFECTS ===
   // Theme Effect
@@ -166,6 +167,7 @@ function App() {
           // HIT ZERO NATURALLY
           clearInterval(intervalRef.current);
           setTimeLeft(0);
+          lastBeepRef.current = -1; // Reset for next session
 
           setFinishPopup({
             title: sessionTypeRef.current === 'work' ? "Focus Completed!" : "Break Over!",
@@ -177,7 +179,14 @@ function App() {
 
           finalizeAndAdvanceRef.current(currentBlockActualDurationRef.current); // Use latest ref to avoid closure bugs
         } else {
-          setTimeLeft(Math.ceil(remaining)); // Ceil for better visual (doesn't hit 0 until actually 0)
+          const ceilRemaining = Math.ceil(remaining);
+          setTimeLeft(ceilRemaining); // Ceil for better visual (doesn't hit 0 until actually 0)
+
+          // LAST 5 SECONDS COUNTDOWN BEEP
+          if (ceilRemaining <= 5 && ceilRemaining > 0 && ceilRemaining !== lastBeepRef.current) {
+            notifications.playBeep();
+            lastBeepRef.current = ceilRemaining;
+          }
         }
       }, 200); // Faster tick for smoother response
     } else {
@@ -222,6 +231,7 @@ function App() {
   const finalizeAndAdvance = (exactElapsedTotal) => {
     setIsActive(false);
     accumulatedElapsedBeforePauseRef.current = 0; // Reset for next block
+    lastBeepRef.current = -1; // Reset for next session sound
 
     const currentST = sessionTypeRef.current;
 
@@ -377,9 +387,10 @@ function App() {
 
   // === FORMATTING ===
   const formatDisplayTime = (seconds) => {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = seconds % 60;
+    const totalSeconds = Math.floor(seconds);
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = totalSeconds % 60;
 
     if (h > 0) {
       return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
@@ -388,9 +399,10 @@ function App() {
   };
 
   const formatTotalTime = (seconds) => {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = seconds % 60;
+    const totalSeconds = Math.floor(seconds);
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = totalSeconds % 60;
 
     if (h > 0) return `${h}h ${m}m ${s}s`;
     if (m > 0) return `${m}m ${s}s`;

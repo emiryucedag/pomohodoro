@@ -74,4 +74,39 @@ export class NoiseSynthesizer {
     }
 }
 
+export class NotificationSynth {
+    constructor() {
+        this.ctx = null;
+    }
+
+    init() {
+        if (!this.ctx) {
+            this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+    }
+
+    playBeep(frequency = 880, duration = 0.1, volume = 0.3) {
+        this.init();
+        if (this.ctx.state === 'suspended') {
+            this.ctx.resume();
+        }
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(frequency, this.ctx.currentTime);
+
+        gain.gain.setValueAtTime(volume, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start();
+        osc.stop(this.ctx.currentTime + duration);
+    }
+}
+
 export const synth = new NoiseSynthesizer();
+export const notifications = new NotificationSynth();
