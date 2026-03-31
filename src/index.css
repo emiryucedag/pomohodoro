@@ -150,7 +150,7 @@ body.focus-mode {
   text-align: center;
   margin: 40px 0;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -4px;
+  letter-spacing: -1px;
   color: var(--text-primary);
   /* Make timer glow subtly matching the accent and theme */
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
