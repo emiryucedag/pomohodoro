@@ -263,36 +263,63 @@ input[type="range"]::-webkit-slider-runnable-track {
 }
 
 /* Focus Mode Adjustments */
+body.focus-mode {
+  overflow: hidden;
+}
+
 body.focus-mode .app-container {
-  grid-template-columns: 1fr;
+  display: block;
 }
 
 body.focus-mode .hide-in-focus {
   display: none !important;
 }
 
-body.focus-mode .minimal-panel {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  position: absolute;
-  bottom: 60px;
-  right: 60px;
+body.focus-mode .minimal-panel.timer-box {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  z-index: 100;
+  transition: background-color 0.3s ease;
+}
+
+body.focus-mode .minimal-panel.timer-box:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 body.focus-mode .timer-display {
-  font-size: 10rem;
   color: white;
-  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  margin: 0;
 }
 
 body.focus-mode .timer-display.break-text {
   color: var(--accent-break);
+  text-shadow: 0 0 20px rgba(255, 209, 36, 0.3);
 }
+
+/* Resize Handles */
+.resize-handle {
+  position: absolute;
+  background: transparent;
+  z-index: 101;
+}
+
+.resize-handle:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.resize-handle.nw { top: -5px; left: -5px; width: 15px; height: 15px; cursor: nw-resize; }
+.resize-handle.ne { top: -5px; right: -5px; width: 15px; height: 15px; cursor: ne-resize; }
+.resize-handle.sw { bottom: -5px; left: -5px; width: 15px; height: 15px; cursor: sw-resize; }
+.resize-handle.se { bottom: -5px; right: -5px; width: 15px; height: 15px; cursor: se-resize; }
+.resize-handle.n  { top: -5px; left: 10px; right: 10px; height: 10px; cursor: n-resize; }
+.resize-handle.s  { bottom: -5px; left: 10px; right: 10px; height: 10px; cursor: s-resize; }
+.resize-handle.e  { top: 10px; bottom: 10px; right: -5px; width: 10px; cursor: e-resize; }
+.resize-handle.w  { top: 10px; bottom: 10px; left: -5px; width: 10px; cursor: w-resize; }
 
 /* Modal Styling */
 .modal-overlay {
@@ -370,4 +397,14 @@ body.focus-mode .timer-display.break-text {
 
 .input-field:focus {
   border-color: var(--accent-color);
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

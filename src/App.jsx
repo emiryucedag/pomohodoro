@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, Maximize, Minimize, Headphones, CheckCircle2, ListOrdered, FastForward, Trash2, Moon, Sun } from 'lucide-react';
+import { Play, Pause, Maximize, Minimize, Headphones, CheckCircle2, ListOrdered, FastForward, Trash2, Moon, Sun, Palette } from 'lucide-react';
 import { synth, notifications } from './audio';
 import TimelinePlanner from './TimelinePlanner';
 import './index.css';
@@ -43,7 +43,20 @@ function App() {
   // === FOCUS MODE ===
   const [focusMode, setFocusMode] = useState(false);
   const [focusBgColor, setFocusBgColor] = useState('#1e293b');
-  const focusColors = ['#1e293b', '#0f172a', '#450a0a', '#064e3b', '#1e3a8a', '#3b0764'];
+  const [showColorPicker, setShowColorPicker] = useState(false);
+  const focusColors = [
+    '#1e293b', '#0f172a', '#450a0a', '#064e3b', '#1e3a8a', '#3b0764',
+    '#581c87', '#be123c', '#115e59', '#1e1b4b', '#020617', '#171717', '#312e81', '#164e63'
+  ];
+
+  const [focusRect, setFocusRect] = useState(() => {
+    const saved = localStorage.getItem('pomohodoro_focus_rect');
+    return saved ? JSON.parse(saved) : { x: window.innerWidth - 460, y: window.innerHeight - 300, width: 400, height: 240 };
+  });
+
+  const isDraggingRef = useRef(false);
+  const isResizingRef = useRef(null); // 'nw', 'ne', 'sw', 'se'
+  const dragStartRef = useRef({ x: 0, y: 0, rect: {} });
 
   // === THEME STATE ===
   const [theme, setTheme] = useState(() => localStorage.getItem('pomohodoro_theme') || 'dark');
@@ -78,7 +91,6 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
-
     if (focusMode) {
       document.body.classList.add('focus-mode');
       document.body.style.backgroundColor = focusBgColor;
@@ -87,6 +99,79 @@ function App() {
       document.body.style.backgroundColor = '';
     }
   }, [focusMode, focusBgColor]);
+
+  useEffect(() => {
+    localStorage.setItem('pomohodoro_focus_rect', JSON.stringify(focusRect));
+  }, [focusRect]);
+
+  // Handle Drag/Resize
+  useEffect(() => {
+    if (!focusMode) return;
+
+    const handleMouseMove = (e) => {
+      if (isDraggingRef.current) {
+        const dx = e.clientX - dragStartRef.current.x;
+        const dy = e.clientY - dragStartRef.current.y;
+        setFocusRect(prev => ({
+          ...prev,
+          x: dragStartRef.current.rect.x + dx,
+          y: dragStartRef.current.rect.y + dy
+        }));
+      } else if (isResizingRef.current) {
+        const dx = e.clientX - dragStartRef.current.x;
+        const dy = e.clientY - dragStartRef.current.y;
+        const startRect = dragStartRef.current.rect;
+        const handle = isResizingRef.current;
+
+        setFocusRect(prev => {
+          let { x, y, width, height } = { ...prev };
+          if (handle.includes('e')) width = Math.max(120, startRect.width + dx);
+          if (handle.includes('s')) height = Math.max(80, startRect.height + dy);
+          if (handle.includes('w')) {
+            const newWidth = Math.max(120, startRect.width - dx);
+            if (newWidth !== 120) {
+              x = startRect.x + dx;
+              width = newWidth;
+            }
+          }
+          if (handle.includes('n')) {
+            const newHeight = Math.max(80, startRect.height - dy);
+            if (newHeight !== 80) {
+              y = startRect.y + dy;
+              height = newHeight;
+            }
+          }
+          return { x, y, width, height };
+        });
+      }
+    };
+
+    const handleMouseUp = () => {
+      isDraggingRef.current = false;
+      isResizingRef.current = null;
+      document.body.style.cursor = '';
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [focusMode]);
+
+  const onMouseDown = (e, type) => {
+    if (!focusMode) return;
+    e.stopPropagation();
+    dragStartRef.current = { x: e.clientX, y: e.clientY, rect: { ...focusRect } };
+    if (type === 'drag') {
+      isDraggingRef.current = true;
+      document.body.style.cursor = 'move';
+    } else {
+      isResizingRef.current = type;
+      document.body.style.cursor = `${type}-resize`;
+    }
+  };
 
   useEffect(() => {
     if (typeof window !== 'undefined' && 'Notification' in window) {
@@ -525,11 +610,48 @@ function App() {
       <div className="app-container">
 
         {/* Panel 1: Main Timer */}
-        <div className="minimal-panel timer-box" style={{ flex: 1 }}>
+        <div
+          className="minimal-panel timer-box"
+          style={{
+            flex: 1,
+            ...(focusMode ? {
+              position: 'absolute',
+              left: `${focusRect.x}px`,
+              top: `${focusRect.y}px`,
+              width: `${focusRect.width}px`,
+              height: `${focusRect.height}px`,
+              cursor: 'move',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: '20px'
+            } : {})
+          }}
+          onMouseDown={(e) => focusMode && onMouseDown(e, 'drag')}
+        >
+
+          {focusMode && (
+            <>
+              <div className="resize-handle nw" onMouseDown={(e) => onMouseDown(e, 'nw')} />
+              <div className="resize-handle ne" onMouseDown={(e) => onMouseDown(e, 'ne')} />
+              <div className="resize-handle sw" onMouseDown={(e) => onMouseDown(e, 'sw')} />
+              <div className="resize-handle se" onMouseDown={(e) => onMouseDown(e, 'se')} />
+              <div className="resize-handle n" onMouseDown={(e) => onMouseDown(e, 'n')} />
+              <div className="resize-handle s" onMouseDown={(e) => onMouseDown(e, 's')} />
+              <div className="resize-handle e" onMouseDown={(e) => onMouseDown(e, 'e')} />
+              <div className="resize-handle w" onMouseDown={(e) => onMouseDown(e, 'w')} />
+            </>
+          )}
 
           <div className="panel-header hide-in-focus">
             <span>{sessionType === 'work' ? 'Focus Session' : 'Break Time'}</span>
-            <button onClick={() => setFocusMode(true)} title="Enter Focus Mode" style={{ padding: '8px 16px', fontSize: '0.9rem' }}>
+            <button onClick={() => {
+              if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+              }
+              setFocusMode(true);
+            }} title="Enter Focus Mode" style={{ padding: '8px 16px', fontSize: '0.9rem' }}>
               <Maximize size={16} /> Focus Mode
             </button>
           </div>
@@ -538,7 +660,13 @@ function App() {
           {(!isActive) && renderConfigUi()}
 
           {/* Timer Digits */}
-          <div className={`timer-display ${sessionType === 'break' ? 'break-text' : ''}`}>
+          <div
+            className={`timer-display ${sessionType === 'break' ? 'break-text' : ''}`}
+            style={focusMode ? {
+              fontSize: `${Math.min(focusRect.width, focusRect.height) / 2.5}px`,
+              margin: '10px 0'
+            } : {}}
+          >
             {formatDisplayTime(timeLeft)}
           </div>
 
@@ -568,21 +696,57 @@ function App() {
             {/* Focus Mode exit and config */}
             {focusMode && (
               <div style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
-                <button onClick={() => setFocusMode(false)} style={{ background: 'rgba(255,255,255,0.1)', color: 'white' }}>
-                  <Minimize size={16} /> Exit Focus Mode
-                </button>
-                <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                  {focusColors.map(color => (
-                    <div
-                      key={color}
-                      style={{
-                        width: '30px', height: '30px', borderRadius: '50%', backgroundColor: color, cursor: 'pointer',
-                        border: focusBgColor === color ? '2px solid white' : '2px solid transparent'
-                      }}
-                      onClick={() => setFocusBgColor(color)}
-                    />
-                  ))}
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button onClick={() => {
+                    if (document.fullscreenElement) {
+                      document.exitFullscreen();
+                    }
+                    setFocusMode(false);
+                  }} style={{ background: 'rgba(255,255,255,0.1)', color: 'white', borderRadius: '30px' }}>
+                    <Minimize size={16} /> Exit
+                  </button>
+
+                  <button
+                    onClick={() => setShowColorPicker(!showColorPicker)}
+                    style={{
+                      background: showColorPicker ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)',
+                      color: 'white',
+                      borderRadius: '30px',
+                      padding: '8px 16px'
+                    }}
+                  >
+                    <Palette size={16} /> {showColorPicker ? 'Hide Colors' : 'Colors'}
+                  </button>
                 </div>
+
+                {showColorPicker && (
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(7, 1fr)',
+                    gap: '10px',
+                    padding: '15px',
+                    background: 'rgba(0,0,0,0.3)',
+                    backdropFilter: 'blur(10px)',
+                    borderRadius: '20px',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    marginTop: '10px',
+                    animation: 'fadeInUp 0.3s ease-out'
+                  }}>
+                    {focusColors.map(color => (
+                      <div
+                        key={color}
+                        style={{
+                          width: '24px', height: '24px', borderRadius: '50%', backgroundColor: color, cursor: 'pointer',
+                          border: focusBgColor === color ? '2px solid white' : '2px solid transparent',
+                          transition: 'transform 0.2s'
+                        }}
+                        onClick={() => setFocusBgColor(color)}
+                        onMouseEnter={(e) => e.target.style.transform = 'scale(1.2)'}
+                        onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
